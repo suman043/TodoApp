@@ -15,6 +15,5 @@ public class UpdateTaskRequest {
     private Category category;
     private TaskStatus taskStatus;
     private String taskDescription;
-    private LocalDateTime dateUpdated;
     private LocalDateTime deadLineDate;
 }

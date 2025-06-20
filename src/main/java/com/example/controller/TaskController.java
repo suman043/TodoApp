@@ -1,10 +1,10 @@
 package com.example.controller;
 
-import com.example.dto.reponse.GetTaskData;
-import com.example.dto.reponse.GetTaskResponse;
-import com.example.exception.SumanException;
 import com.example.service.TaskService;
+import com.example.dto.reponse.GetTaskData;
+import com.example.exception.SumanException;
 import com.example.dto.reponse.TaskResponse;
+import com.example.dto.reponse.GetTaskResponse;
 import com.example.dto.request.CreateTaskRequest;
 import com.example.dto.request.UpdateTaskRequest;
 import com.example.dto.request.DeleteTaskRequest;
@@ -12,7 +12,6 @@ import com.example.dto.request.DeleteTaskRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")

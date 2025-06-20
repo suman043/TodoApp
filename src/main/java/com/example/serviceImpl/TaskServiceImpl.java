@@ -16,6 +16,8 @@ import com.example.dto.request.DeleteTaskRequest;
 import com.example.dto.request.UpdateTaskRequest;
 import com.example.dto.request.CreateTaskRequest;
 
+import java.time.LocalDateTime;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -62,23 +64,37 @@ public class TaskServiceImpl implements TaskService {
             if (taskById == null) {
                 throw new SumanException("TaskID Not Found", HttpStatus.BAD_REQUEST);
             }
-            if (!updateTaskRequest.getTaskName().trim().isEmpty()) {
+            int count = 0;
+            if (updateTaskRequest.getTaskName() != null) {
+                System.out.println("Check1");
+                if (updateTaskRequest.getTaskName().trim().isEmpty()) {
+                    throw new SumanException("Task Name cannot be empty", HttpStatus.BAD_REQUEST);
+                }
                 taskById.setTaskName(updateTaskRequest.getTaskName());
+                count++;
             }
             if (updateTaskRequest.getCategory() != null) {
                 taskById.setCategory(updateTaskRequest.getCategory());
+                count++;
             }
             if (updateTaskRequest.getTaskStatus() != null) {
                 taskById.setTaskStatus(updateTaskRequest.getTaskStatus());
+                count++;
             }
             if (updateTaskRequest.getDeadLineDate() != null) {
                 taskById.setDeadLineDate(updateTaskRequest.getDeadLineDate());
+                count++;
             }
-            if (!updateTaskRequest.getTaskDescription().trim().isEmpty()) {
+            if (updateTaskRequest.getTaskDescription() != null) {
+                if (updateTaskRequest.getTaskDescription().trim().isEmpty()) {
+                    throw new SumanException("Task Description cannot be empty", HttpStatus.BAD_REQUEST);
+                }
                 taskById.setTaskDescription(updateTaskRequest.getTaskDescription());
+                count++;
             }
-            if (updateTaskRequest.getDateUpdated() != null) {
-                taskById.setDateUpdated(updateTaskRequest.getDateUpdated());
+            if(count > 0) {
+                taskById.setDateUpdated(LocalDateTime.now().
+                        withNano((LocalDateTime.now().getNano() / 1000) * 1000));
             }
             taskRepository.save(taskById);
 
@@ -146,6 +162,9 @@ public class TaskServiceImpl implements TaskService {
         List<GetTaskData> data = new ArrayList<>();
         try {
             List<Task> taskList = taskRepository.findAll();
+            if(taskList == null) {
+                throw new SumanException("Empty Database", HttpStatus.BAD_REQUEST);
+            }
             for (Task task : taskList) {
                 GetTaskData getTaskData = new GetTaskData();
                 getTaskData.setTaskId(task.getTaskId());
